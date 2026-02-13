@@ -72,28 +72,21 @@ blocks:
       \ GRC will instantiate the first class it finds\nto get ports and parameters\
       \ of your block. The arguments to __init__  will\nbe the parameters. All of\
       \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
-      from gnuradio import gr\n\n\nclass blk(gr.sync_block):  # other base classes\
-      \ are basic_block, decim_block, interp_block\n    \"\"\"Embedded Python Block\
-      \ example - a simple multiply const\"\"\"\n\n    def __init__(self, example_param=1.0):\
-      \  # only default arguments here\n        \"\"\"arguments to this function show\
-      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
-      \   self,\n            name='Embedded Python Block',   # will show up in GRC\n\
-      \            in_sig=[np.complex64],\n            out_sig=[np.complex64]\n  \
-      \      )\n        # if an attribute with the same name as a parameter is found,\n\
-      \        # a callback is registered (properties work, too).\n        self.example_param\
-      \ = example_param\n\n    def work(self, input_items, output_items):\n      \
-      \  \"\"\"example: multiply with constant\"\"\"\n        output_items[0][:] =\
-      \ input_items[0] * self.example_param\n        return len(output_items[0])\n"
+      from gnuradio import gr\n\nclass blk(gr.sync_block):\n    def __init__(self):\n\
+      \        gr.sync_block.__init__(\n            self,\n            name=\"Diferenciador\"\
+      ,\n            in_sig=[np.float32],\n            out_sig=[np.float32]\n    \
+      \    )\n        self.prev = 0.0\n\n    def work(self, input_items, output_items):\n\
+      \        x = input_items[0]\n        y = output_items[0]\n\n        y[0] = x[0]\
+      \ - self.prev\n        y[1:] = x[1:] - x[:-1]\n\n        self.prev = x[-1]\n\
+      \n        return len(y)\n"
     affinity: ''
     alias: ''
     comment: ''
-    example_param: ''
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: ('Embedded Python Block', 'blk', [('example_param', '1.0')], [('0',
-      'complex', 1)], [('0', 'complex', 1)], 'Embedded Python Block example - a simple
-      multiply const', ['example_param'])
+    _io_cache: ('Diferenciador', 'blk', [], [('0', 'float', 1)], [('0', 'float', 1)],
+      '', [])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -126,11 +119,11 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [928, 264.0]
+    coordinate: [888, 264.0]
     rotation: 0
     state: enabled
 connections: []
 
 metadata:
   file_format: 1
-  grc_version: 3.10.10.0
+  grc_version: v3.10.11.0-89-ga17f69e7
