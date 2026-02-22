@@ -45,46 +45,6 @@ blocks:
     coordinate: [200, 12]
     rotation: 0
     state: enabled
-- name: analog_const_source_x_0
-  id: analog_const_source_x
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: float
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [392, 192.0]
-    rotation: 0
-    state: disabled
-- name: analog_sig_source_x_0
-  id: analog_sig_source_x
-  parameters:
-    affinity: ''
-    alias: ''
-    amp: '1'
-    comment: ''
-    freq: '100'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    offset: '0'
-    phase: '0'
-    samp_rate: samp_rate
-    showports: 'False'
-    type: float
-    waveform: analog.GR_SIN_WAVE
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [376, 440.0]
-    rotation: 0
-    state: enabled
 - name: blocks_vector_source_x_0
   id: blocks_vector_source_x
   parameters:
@@ -96,26 +56,26 @@ blocks:
     repeat: 'True'
     tags: '[]'
     type: float
-    vector: (1, 1, 1)
+    vector: (1,1,1,1,1,1,-1,-1,-1,-1,-1,-1)
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [408, 292.0]
+    coordinate: [408, 412.0]
     rotation: 0
-    state: disabled
-- name: epy_block_0
+    state: enabled
+- name: epy_block_1
   id: epy_block
   parameters:
     _source_code: "import numpy as np\nfrom gnuradio import gr\n\nclass blk(gr.sync_block):\
       \  \n    def __init__(self):\n        gr.sync_block.__init__(\n            self,\n\
-      \            name='e_Acum',\n            in_sig=[np.float32],   # Ajusta tipo\
-      \ si es complejo\n            out_sig=[np.float32]\n        )\n        \n  \
-      \      self.acum = 0.0  # Variable de estado (memoria)\n\n    def work(self,\
-      \ input_items, output_items):\n        in0 = input_items[0]\n        out = output_items[0]\n\
-      \n        for i in range(len(in0)):\n            self.acum += in0[i]\n     \
-      \       out[i] = self.acum\n\n        return len(out)\n"
+      \            name='e_Acum',\n            in_sig=[np.float32],\n            out_sig=[np.float32]\n\
+      \        )\n        \n        self.acum = 0.0\n\n    def work(self, input_items,\
+      \ output_items):\n        x = input_items[0]\n        y0 = output_items[0]\n\
+      \n        # quitar DC (media del bloque)\n        x_mean = np.mean(x)\n\n  \
+      \      for i in range(len(x)):\n            self.acum += (x[i] - x_mean)\n \
+      \           y0[i] = self.acum\n\n        return len(y0)\n\n\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -127,36 +87,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [712, 320.0]
-    rotation: 0
-    state: enabled
-- name: qtgui_sink_x_0
-  id: qtgui_sink_x
-  parameters:
-    affinity: ''
-    alias: ''
-    bw: samp_rate
-    comment: ''
-    fc: '0'
-    fftsize: '1024'
-    gui_hint: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    name: '""'
-    plotconst: 'True'
-    plotfreq: 'True'
-    plottime: 'True'
-    plotwaterfall: 'True'
-    rate: '10'
-    showports: 'False'
-    showrf: 'False'
-    type: float
-    wintype: window.WIN_BLACKMAN_hARRIS
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 208.0]
+    coordinate: [712, 256.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -213,7 +144,7 @@ blocks:
     marker8: '-1'
     marker9: '-1'
     name: '""'
-    nconnections: '1'
+    nconnections: '2'
     size: '1024'
     srate: samp_rate
     stemplot: 'False'
@@ -234,7 +165,7 @@ blocks:
     tr_slope: qtgui.TRIG_SLOPE_POS
     tr_tag: '""'
     type: float
-    update_time: '10'
+    update_time: '5'
     width1: '1'
     width10: '1'
     width2: '1'
@@ -258,11 +189,9 @@ blocks:
     state: enabled
 
 connections:
-- [analog_const_source_x_0, '0', epy_block_0, '0']
-- [analog_sig_source_x_0, '0', epy_block_0, '0']
-- [blocks_vector_source_x_0, '0', epy_block_0, '0']
-- [epy_block_0, '0', qtgui_sink_x_0, '0']
-- [epy_block_0, '0', qtgui_time_sink_x_0, '0']
+- [blocks_vector_source_x_0, '0', epy_block_1, '0']
+- [blocks_vector_source_x_0, '0', qtgui_time_sink_x_0, '1']
+- [epy_block_1, '0', qtgui_time_sink_x_0, '0']
 
 metadata:
   file_format: 1
