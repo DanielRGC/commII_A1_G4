@@ -163,7 +163,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    const: '0'
+    const: math.pi/2
     maxoutbuf: '0'
     minoutbuf: '0'
     type: float
@@ -209,7 +209,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [260, 141]
+    coordinate: [192, 128.0]
     rotation: 0
     state: disabled
 - name: blocks_char_to_float_0
@@ -226,7 +226,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [150, 200]
+    coordinate: [208, 200.0]
     rotation: 0
     state: true
 - name: blocks_multiply_const_vxx_0
@@ -244,7 +244,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [852, 125]
+    coordinate: [984, 120.0]
     rotation: 0
     state: disabled
 - name: blocks_multiply_const_vxx_0_0
@@ -262,7 +262,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [382, 142]
+    coordinate: [384, 128.0]
     rotation: 0
     state: disabled
 - name: blocks_multiply_const_vxx_0_1
@@ -280,7 +280,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [798, 174]
+    coordinate: [856, 168.0]
     rotation: 0
     state: disabled
 - name: epy_block_0
@@ -505,7 +505,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [844, 832]
+    coordinate: [840, 680.0]
     rotation: 0
     state: true
 - name: qtgui_freq_sink_x_0
@@ -586,7 +586,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [373, 768]
+    coordinate: [520, 768.0]
     rotation: 0
     state: true
 - name: qtgui_freq_sink_x_0_0
@@ -667,7 +667,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [841, 750]
+    coordinate: [848, 584.0]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_0_0
@@ -958,7 +958,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [375, 677]
+    coordinate: [344, 688.0]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_0_1_0_0
@@ -1055,7 +1055,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [844, 661]
+    coordinate: [848, 480.0]
     rotation: 0
     state: true
 - name: virtual_sink_0_0
@@ -1068,7 +1068,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [483, 282]
+    coordinate: [416.0, 312]
     rotation: 270
     state: true
 - name: virtual_sink_0_0_0
@@ -1159,7 +1159,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [596, 686]
+    coordinate: [656, 544.0]
     rotation: 0
     state: true
 
@@ -1191,3 +1191,4 @@ connections:
 
 metadata:
   file_format: 1
+  grc_version: v3.10.11.0-89-ga17f69e7
