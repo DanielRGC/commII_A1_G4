@@ -66,14 +66,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [684, 10]
+    coordinate: [752, 16.0]
     rotation: 0
     state: enabled
 - name: h
   id: variable
   parameters:
     comment: ''
-    value: np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
+    value: np.array([1])
   states:
     bus_sink: false
     bus_source: false
@@ -90,7 +90,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [778, 14]
+    coordinate: [864, 24.0]
     rotation: 0
     state: enabled
 - name: Menu
@@ -133,7 +133,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    const: -1./2.
+    const: '-0.1'
     maxoutbuf: '0'
     minoutbuf: '0'
     type: float
@@ -382,7 +382,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [904, 28.0]
+    coordinate: [992, 36.0]
     rotation: 0
     state: true
 - name: interp_fir_filter_xxx_0

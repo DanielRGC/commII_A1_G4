@@ -68,9 +68,9 @@ class prac3a(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.h = h = np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
+        self.h = h = np.array([1])
         self.Sps = Sps = len(h)
-        self.Rb = Rb = 320000
+        self.Rb = Rb = 32000
         self.samp_rate = samp_rate = Rb*Sps
         self.N = N = 1024
 
@@ -246,7 +246,7 @@ class prac3a(gr.top_block, Qt.QWidget):
         self.blocks_add_xx_0 = blocks.add_vff(1)
         self.analog_random_source_x_0 = blocks.vector_source_b(list(map(int, numpy.random.randint(0, 2, 1000000))), True)
         self.analog_noise_source_x_0 = analog.noise_source_f(analog.GR_GAUSSIAN, 12, 76)
-        self.analog_const_source_x_0_0 = analog.sig_source_f(0, analog.GR_CONST_WAVE, 0, 0, (-1./2.))
+        self.analog_const_source_x_0_0 = analog.sig_source_f(0, analog.GR_CONST_WAVE, 0, 0, (-0.1))
 
 
         ##################################################
