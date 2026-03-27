@@ -78,6 +78,27 @@ blocks:
     coordinate: [1090, 483]
     rotation: 0
     state: true
+- name: fc_2
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 1,0,1,1
+    label: Carrier Freq. 2
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: samp_rate/1000
+    stop: samp_rate/8
+    value: Rb*2
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1088, 632.0]
+    rotation: 0
+    state: true
 - name: fd
   id: variable_qtgui_range
   parameters:
@@ -163,7 +184,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    const: math.pi/2
+    const: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
     type: float
@@ -171,7 +192,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1101, 363]
+    coordinate: [1192, 376.0]
     rotation: 180
     state: true
 - name: analog_random_source_x_0
@@ -209,9 +230,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 128.0]
+    coordinate: [352, 200.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_char_to_float_0
   id: blocks_char_to_float
   parameters:
@@ -226,7 +247,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [208, 200.0]
+    coordinate: [184, 200.0]
     rotation: 0
     state: true
 - name: blocks_multiply_const_vxx_0
@@ -244,9 +265,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [984, 120.0]
+    coordinate: [1008, 144.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_multiply_const_vxx_0_0
   id: blocks_multiply_const_vxx
   parameters:
@@ -262,9 +283,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [384, 128.0]
+    coordinate: [520, 200.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_multiply_const_vxx_0_1
   id: blocks_multiply_const_vxx
   parameters:
@@ -280,7 +301,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [856, 168.0]
+    coordinate: [1072, 48.0]
     rotation: 0
     state: disabled
 - name: epy_block_0
@@ -311,9 +332,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1102, 213]
+    coordinate: [1192, 192.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: epy_block_0_0
   id: epy_block
   parameters:
@@ -337,7 +358,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1102, 285]
+    coordinate: [1192, 280.0]
     rotation: 0
     state: true
 - name: epy_block_0_1
@@ -368,9 +389,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [771, 129]
+    coordinate: [888, 152.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: import_0
   id: import
   parameters:
@@ -413,7 +434,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [511, 197]
+    coordinate: [688, 192.0]
     rotation: 0
     state: true
 - name: qtgui_const_sink_x_0
@@ -667,7 +688,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 584.0]
+    coordinate: [856, 584.0]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_0_0
@@ -1068,7 +1089,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [416.0, 312]
+    coordinate: [640.0, 304]
     rotation: 270
     state: true
 - name: virtual_sink_0_0_0
@@ -1081,7 +1102,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [696, 298]
+    coordinate: [832.0, 328]
     rotation: 270
     state: true
 - name: virtual_sink_0_0_0_0
@@ -1094,7 +1115,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1294, 320]
+    coordinate: [1424.0, 328]
     rotation: 270
     state: true
 - name: virtual_sink_0_0_0_0_0
@@ -1107,7 +1128,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1244, 339]
+    coordinate: [1352.0, 336]
     rotation: 270
     state: true
 - name: virtual_source_0_0
@@ -1164,20 +1185,18 @@ blocks:
     state: true
 
 connections:
-- [analog_const_source_x_0, '0', epy_block_0, '1']
-- [analog_const_source_x_0, '0', epy_block_0_0, '1']
+- [analog_const_source_x_0, '0', epy_block_0, '0']
+- [analog_const_source_x_0, '0', epy_block_0_0, '0']
 - [analog_random_source_x_0, '0', blocks_char_to_float_0, '0']
 - [blocks_add_const_vxx_0, '0', blocks_multiply_const_vxx_0_0, '0']
 - [blocks_char_to_float_0, '0', blocks_add_const_vxx_0, '0']
-- [blocks_char_to_float_0, '0', interp_fir_filter_xxx_0, '0']
-- [blocks_char_to_float_0, '0', virtual_sink_0_0, '0']
+- [blocks_multiply_const_vxx_0, '0', epy_block_0, '1']
+- [blocks_multiply_const_vxx_0, '0', epy_block_0_0, '1']
 - [blocks_multiply_const_vxx_0_0, '0', interp_fir_filter_xxx_0, '0']
 - [blocks_multiply_const_vxx_0_0, '0', virtual_sink_0_0, '0']
 - [epy_block_0, '0', virtual_sink_0_0_0_0, '0']
 - [epy_block_0_0, '0', virtual_sink_0_0_0_0_0, '0']
 - [epy_block_0_1, '0', blocks_multiply_const_vxx_0, '0']
-- [interp_fir_filter_xxx_0, '0', epy_block_0, '0']
-- [interp_fir_filter_xxx_0, '0', epy_block_0_0, '0']
 - [interp_fir_filter_xxx_0, '0', epy_block_0_1, '0']
 - [interp_fir_filter_xxx_0, '0', virtual_sink_0_0_0, '0']
 - [virtual_source_0_0, '0', qtgui_time_sink_x_0_0, '0']
@@ -1191,4 +1210,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: v3.10.11.0-89-ga17f69e7
+  grc_version: 3.10.9.2
