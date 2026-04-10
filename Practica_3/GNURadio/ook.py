@@ -7,7 +7,7 @@
 # GNU Radio Python Flow Graph
 # Title: ook
 # Author: radiogis_director
-# GNU Radio version: 3.10.9.2
+# GNU Radio version: v3.10.11.0-89-ga17f69e7
 
 from PyQt5 import Qt
 from gnuradio import qtgui
@@ -31,6 +31,7 @@ import ook_epy_block_0 as epy_block_0  # embedded python block
 import ook_epy_block_0_0 as epy_block_0_0  # embedded python block
 import ook_epy_block_0_1 as epy_block_0_1  # embedded python block
 import sip
+import threading
 
 
 
@@ -57,7 +58,7 @@ class ook(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "ook")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "ook")
 
         try:
             geometry = self.settings.value("geometry")
@@ -65,6 +66,7 @@ class ook(gr.top_block, Qt.QWidget):
                 self.restoreGeometry(geometry)
         except BaseException as exc:
             print(f"Qt GUI: Could not restore geometry: {str(exc)}", file=sys.stderr)
+        self.flowgraph_started = threading.Event()
 
         ##################################################
         # Variables
@@ -74,7 +76,6 @@ class ook(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate = Rb*Sps
         self.h = h = [1]*Sps
         self.fd = fd = Rb
-        self.fc_2 = fc_2 = Rb*2
         self.fc = fc = Rb*4
 
         ##################################################
@@ -472,13 +473,6 @@ class ook(gr.top_block, Qt.QWidget):
             self.Menu_grid_layout_3.setColumnStretch(c, 1)
         self.interp_fir_filter_xxx_0 = filter.interp_fir_filter_fff(Sps, h)
         self.interp_fir_filter_xxx_0.declare_sample_delay(0)
-        self._fc_2_range = qtgui.Range(0, samp_rate/8, samp_rate/1000, Rb*2, 200)
-        self._fc_2_win = qtgui.RangeWidget(self._fc_2_range, self.set_fc_2, "Carrier Freq. 2", "counter_slider", float, QtCore.Qt.Horizontal)
-        self.top_grid_layout.addWidget(self._fc_2_win, 1, 0, 1, 1)
-        for r in range(1, 2):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
         self.epy_block_0_1 = epy_block_0_1.blk()
         self.epy_block_0_0 = epy_block_0_0.blk()
         self.epy_block_0 = epy_block_0.blk(fc=fc, samp_rate=samp_rate)
@@ -514,7 +508,7 @@ class ook(gr.top_block, Qt.QWidget):
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "ook")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "ook")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -536,7 +530,6 @@ class ook(gr.top_block, Qt.QWidget):
     def set_Rb(self, Rb):
         self.Rb = Rb
         self.set_fc(self.Rb*4)
-        self.set_fc_2(self.Rb*2)
         self.set_fd(self.Rb)
         self.set_samp_rate(self.Rb*self.Sps)
         self.blocks_multiply_const_vxx_0.set_k((2*math.pi*self.fd/(self.Rb*self.Sps)))
@@ -568,12 +561,6 @@ class ook(gr.top_block, Qt.QWidget):
         self.fd = fd
         self.blocks_multiply_const_vxx_0.set_k((2*math.pi*self.fd/(self.Rb*self.Sps)))
 
-    def get_fc_2(self):
-        return self.fc_2
-
-    def set_fc_2(self, fc_2):
-        self.fc_2 = fc_2
-
     def get_fc(self):
         return self.fc
 
@@ -591,6 +578,7 @@ def main(top_block_cls=ook, options=None):
     tb = top_block_cls()
 
     tb.start()
+    tb.flowgraph_started.set()
 
     tb.show()
 

@@ -78,27 +78,6 @@ blocks:
     coordinate: [1090, 483]
     rotation: 0
     state: true
-- name: fc_2
-  id: variable_qtgui_range
-  parameters:
-    comment: ''
-    gui_hint: 1,0,1,1
-    label: Carrier Freq. 2
-    min_len: '200'
-    orient: QtCore.Qt.Horizontal
-    rangeType: float
-    start: '0'
-    step: samp_rate/1000
-    stop: samp_rate/8
-    value: Rb*2
-    widget: counter_slider
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1088, 632.0]
-    rotation: 0
-    state: true
 - name: fd
   id: variable_qtgui_range
   parameters:
@@ -332,7 +311,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 192.0]
+    coordinate: [1304, 168.0]
     rotation: 0
     state: enabled
 - name: epy_block_0_0
@@ -358,7 +337,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 280.0]
+    coordinate: [1208, 280.0]
     rotation: 0
     state: true
 - name: epy_block_0_1
@@ -1210,4 +1189,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.9.2
+  grc_version: v3.10.11.0-89-ga17f69e7
