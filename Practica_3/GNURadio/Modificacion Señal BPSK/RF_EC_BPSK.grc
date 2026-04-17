@@ -229,24 +229,6 @@ blocks:
     coordinate: [256, 208.0]
     rotation: 0
     state: true
-- name: blocks_multiply_const_vxx_0
-  id: blocks_multiply_const_vxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: 2*math.pi*fd/(Rb*Sps)
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [936, 96.0]
-    rotation: 0
-    state: disabled
 - name: blocks_multiply_const_vxx_0_0
   id: blocks_multiply_const_vxx
   parameters:
@@ -265,31 +247,25 @@ blocks:
     coordinate: [448, 112.0]
     rotation: 0
     state: enabled
-- name: blocks_multiply_const_vxx_0_1
-  id: blocks_multiply_const_vxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: math.pi
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [816, 160.0]
-    rotation: 0
-    state: disabled
 - name: epy_block_0
   id: epy_block
   parameters:
     _source_code: "import numpy as np\nfrom gnuradio import gr\nimport math\n\nclass\
-      \ blk(gr.sync_block):  \n    \"\"\"This block is a RF VCO and works as following:\
-      \ \u2026..\"\"\"\n\n    def __init__(self, fc=128000, samp_rate=320000):  \n\
-      \        gr.sync_block.__init__(\n            self,\n            name='e_RF_VCO_ff',\
+      \ blk(gr.sync_block):  \n    \"\"\"\n    Oscilador Controlado por Voltaje (VCO)\
+      \ en RF\n\n    Descripci\xF3n:\n    Este bloque implementa un oscilador digital\
+      \ que genera una se\xF1al cosenoidal\n    de frecuencia fija (fc), cuya amplitud\
+      \ y fase pueden ser controladas en tiempo real\n    mediante dos se\xF1ales\
+      \ de entrada.\n\n    La se\xF1al de salida est\xE1 dada por:\n    y[n] = A[n]\
+      \ * cos(2*pi*fc*n/samp_rate + Q[n])\n\n    Entradas:\n        1. A[n] (entrada\
+      \ superior):\n           Controla la amplitud instant\xE1nea de la se\xF1al\
+      \ de salida.\n           Es decir, escala directamente el coseno generado.\n\
+      \n        2. Q[n] (segunda entrada):\n           Controla la fase instant\xE1\
+      nea (en radianes).\n           Permite implementar modulaci\xF3n en fase (PM)\
+      \ o frecuencia (FM si var\xEDa en el tiempo).\n\n    Salida:\n        Se\xF1\
+      al cosenoidal modulada en amplitud y fase.\n\n    Par\xE1metros:\n        fc:\
+      \ frecuencia de la portadora (Hz)\n        samp_rate: frecuencia de muestreo\
+      \ (Hz)\n        \n        \"\"\"\n\n    def __init__(self, fc=128000, samp_rate=320000):\
+      \  \n        gr.sync_block.__init__(\n            self,\n            name='e_RF_VCO_ff',\
       \   \n            in_sig=[np.float32, np.float32],\n            out_sig=[np.float32]\n\
       \        )\n        self.fc = fc\n        self.samp_rate = samp_rate\n     \
       \   self.n_m=0\n\n    def work(self, input_items, output_items):\n        A=input_items[0]\n\
@@ -306,8 +282,21 @@ blocks:
     samp_rate: samp_rate
   states:
     _io_cache: "('e_RF_VCO_ff', 'blk', [('fc', '128000'), ('samp_rate', '320000')],\
-      \ [('0', 'float', 1), ('1', 'float', 1)], [('0', 'float', 1)], 'This block is\
-      \ a RF VCO and works as following: \u2026..', ['fc', 'samp_rate'])"
+      \ [('0', 'float', 1), ('1', 'float', 1)], [('0', 'float', 1)], '\\n    Oscilador\
+      \ Controlado por Voltaje (VCO) en RF\\n\\n    Descripci\xF3n:\\n    Este bloque\
+      \ implementa un oscilador digital que genera una se\xF1al cosenoidal\\n    de\
+      \ frecuencia fija (fc), cuya amplitud y fase pueden ser controladas en tiempo\
+      \ real\\n    mediante dos se\xF1ales de entrada.\\n\\n    La se\xF1al de salida\
+      \ est\xE1 dada por:\\n    y[n] = A[n] * cos(2*pi*fc*n/samp_rate + Q[n])\\n\\\
+      n    Entradas:\\n        1. A[n] (entrada superior):\\n           Controla la\
+      \ amplitud instant\xE1nea de la se\xF1al de salida.\\n           Es decir, escala\
+      \ directamente el coseno generado.\\n\\n        2. Q[n] (segunda entrada):\\\
+      n           Controla la fase instant\xE1nea (en radianes).\\n           Permite\
+      \ implementar modulaci\xF3n en fase (PM) o frecuencia (FM si var\xEDa en el\
+      \ tiempo).\\n\\n    Salida:\\n        Se\xF1al cosenoidal modulada en amplitud\
+      \ y fase.\\n\\n    Par\xE1metros:\\n        fc: frecuencia de la portadora (Hz)\\\
+      n        samp_rate: frecuencia de muestreo (Hz)\\n        \\n        ', ['fc',\
+      \ 'samp_rate'])"
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -318,9 +307,25 @@ blocks:
   id: epy_block
   parameters:
     _source_code: "import numpy as np\nfrom gnuradio import gr\nimport math\n\nclass\
-      \ blk(gr.sync_block):  \n    \"\"\"This block is a CE VCO or baseband VCO and\
-      \ works as following: \u2026..\"\"\"\n\n    def __init__(self,):  \n       \
-      \ gr.sync_block.__init__(\n            self,\n            name='e_CE_VCO_fc',\
+      \ blk(gr.sync_block):  \n    \"\"\"Oscilador Controlado por Voltaje en Banda\
+      \ Base (Complex Envelope VCO)\n\n    Descripci\xF3n:\n    Este bloque implementa\
+      \ un VCO en banda base utilizando representaci\xF3n compleja.\n    Genera una\
+      \ se\xF1al compleja de la forma:\n\n        y[n] = A[n] * exp(j*Q[n])\n\n  \
+      \  donde:\n        - A[n] es la amplitud instant\xE1nea\n        - Q[n] es la\
+      \ fase instant\xE1nea (en radianes)\n\n    A diferencia de un VCO en RF (real),\
+      \ este bloque trabaja en envolvente compleja,\n    lo cual es t\xEDpico en sistemas\
+      \ de comunicaciones digitales y SDR.\n\n    Entradas:\n        1. A[n] (entrada\
+      \ superior):\n           Controla la magnitud (amplitud) de la se\xF1al compleja.\n\
+      \           Equivale al m\xF3dulo del n\xFAmero complejo.\n\n        2. Q[n]\
+      \ (segunda entrada):\n           Controla la fase de la se\xF1al en radianes.\n\
+      \           Define el \xE1ngulo del fasor complejo.\n\n    Salida:\n       \
+      \ Se\xF1al compleja (I + jQ) que representa la envolvente en banda base.\n \
+      \       Esta se\xF1al puede interpretarse como:\n            - Parte real \u2192\
+      \ componente en fase (I)\n            - Parte imaginaria \u2192 componente en\
+      \ cuadratura (Q)\n\n    Par\xE1metros:\n        Este bloque no tiene par\xE1\
+      metros internos, ya que toda la din\xE1mica\n        est\xE1 definida por las\
+      \ se\xF1ales de entrada.\n        \n        \"\"\"\n\n    def __init__(self,):\
+      \  \n        gr.sync_block.__init__(\n            self,\n            name='e_CE_VCO_fc',\
       \   \n            in_sig=[np.float32, np.float32],\n            out_sig=[np.complex64]\n\
       \        )\n        \n    def work(self, input_items, output_items):\n     \
       \   A=input_items[0]\n        Q=input_items[1]\n        y=output_items[0]\n\
@@ -332,45 +337,30 @@ blocks:
     minoutbuf: '0'
   states:
     _io_cache: "('e_CE_VCO_fc', 'blk', [], [('0', 'float', 1), ('1', 'float', 1)],\
-      \ [('0', 'complex', 1)], 'This block is a CE VCO or baseband VCO and works as\
-      \ following: \u2026..', [])"
+      \ [('0', 'complex', 1)], 'Oscilador Controlado por Voltaje en Banda Base (Complex\
+      \ Envelope VCO)\\n\\n    Descripci\xF3n:\\n    Este bloque implementa un VCO\
+      \ en banda base utilizando representaci\xF3n compleja.\\n    Genera una se\xF1\
+      al compleja de la forma:\\n\\n        y[n] = A[n] * exp(j*Q[n])\\n\\n    donde:\\\
+      n        - A[n] es la amplitud instant\xE1nea\\n        - Q[n] es la fase instant\xE1\
+      nea (en radianes)\\n\\n    A diferencia de un VCO en RF (real), este bloque\
+      \ trabaja en envolvente compleja,\\n    lo cual es t\xEDpico en sistemas de\
+      \ comunicaciones digitales y SDR.\\n\\n    Entradas:\\n        1. A[n] (entrada\
+      \ superior):\\n           Controla la magnitud (amplitud) de la se\xF1al compleja.\\\
+      n           Equivale al m\xF3dulo del n\xFAmero complejo.\\n\\n        2. Q[n]\
+      \ (segunda entrada):\\n           Controla la fase de la se\xF1al en radianes.\\\
+      n           Define el \xE1ngulo del fasor complejo.\\n\\n    Salida:\\n    \
+      \    Se\xF1al compleja (I + jQ) que representa la envolvente en banda base.\\\
+      n        Esta se\xF1al puede interpretarse como:\\n            - Parte real\
+      \ \u2192 componente en fase (I)\\n            - Parte imaginaria \u2192 componente\
+      \ en cuadratura (Q)\\n\\n    Par\xE1metros:\\n        Este bloque no tiene par\xE1\
+      metros internos, ya que toda la din\xE1mica\\n        est\xE1 definida por las\
+      \ se\xF1ales de entrada.\\n        \\n        ', [])"
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [1102, 285]
     rotation: 0
     state: true
-- name: epy_block_0_1
-  id: epy_block
-  parameters:
-    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
-      \ GRC will instantiate the first class it finds\nto get ports and parameters\
-      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
-      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
-      from gnuradio import gr\n\n\nclass blk(gr.sync_block):  # other base classes\
-      \ are basic_block, decim_block, interp_block\n    \"\"\"Embedded Python Block\
-      \ example - a simple multiply const\"\"\"\n\n    def __init__(self,):  # only\
-      \ default arguments here\n        \"\"\"arguments to this function show up as\
-      \ parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n            self,\n\
-      \            name='e_Acum',   # will show up in GRC\n            in_sig=[np.float32],\n\
-      \            out_sig=[np.float32]\n        )\n        self.acum=0\n        \n\
-      \    def work(self, input_items, output_items):\n        x=input_items[0]\n\
-      \        y= output_items[0]\n\n\n        y[:]=self.acum+np.cumsum(x)\n     \
-      \   self.acum=y[-1]\n        return len(y)\n"
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    _io_cache: ('e_Acum', 'blk', [], [('0', 'float', 1)], [('0', 'float', 1)], 'Embedded
-      Python Block example - a simple multiply const', [])
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [728, 88.0]
-    rotation: 0
-    state: disabled
 - name: import_0
   id: import
   parameters:
@@ -1169,17 +1159,12 @@ connections:
 - [analog_random_source_x_0, '0', blocks_char_to_float_0, '0']
 - [blocks_add_const_vxx_0, '0', blocks_multiply_const_vxx_0_0, '0']
 - [blocks_char_to_float_0, '0', blocks_add_const_vxx_0, '0']
-- [blocks_multiply_const_vxx_0, '0', epy_block_0, '0']
 - [blocks_multiply_const_vxx_0_0, '0', interp_fir_filter_xxx_0, '0']
 - [blocks_multiply_const_vxx_0_0, '0', virtual_sink_0_0, '0']
-- [blocks_multiply_const_vxx_0_1, '0', epy_block_0, '0']
 - [epy_block_0, '0', virtual_sink_0_0_0_0, '0']
 - [epy_block_0_0, '0', virtual_sink_0_0_0_0_0, '0']
-- [epy_block_0_1, '0', blocks_multiply_const_vxx_0, '0']
-- [interp_fir_filter_xxx_0, '0', blocks_multiply_const_vxx_0_1, '0']
 - [interp_fir_filter_xxx_0, '0', epy_block_0, '0']
 - [interp_fir_filter_xxx_0, '0', epy_block_0_0, '0']
-- [interp_fir_filter_xxx_0, '0', epy_block_0_1, '0']
 - [interp_fir_filter_xxx_0, '0', virtual_sink_0_0_0, '0']
 - [virtual_source_0_0, '0', qtgui_time_sink_x_0_0, '0']
 - [virtual_source_0_1, '0', qtgui_time_sink_x_0_1, '0']

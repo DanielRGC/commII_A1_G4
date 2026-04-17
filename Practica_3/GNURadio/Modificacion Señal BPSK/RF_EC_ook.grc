@@ -211,7 +211,7 @@ blocks:
     bus_structure: null
     coordinate: [240, 112.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_char_to_float_0
   id: blocks_char_to_float
   parameters:
@@ -264,7 +264,7 @@ blocks:
     bus_structure: null
     coordinate: [448, 112.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_multiply_const_vxx_0_1
   id: blocks_multiply_const_vxx
   parameters:
@@ -1169,6 +1169,8 @@ connections:
 - [analog_random_source_x_0, '0', blocks_char_to_float_0, '0']
 - [blocks_add_const_vxx_0, '0', blocks_multiply_const_vxx_0_0, '0']
 - [blocks_char_to_float_0, '0', blocks_add_const_vxx_0, '0']
+- [blocks_char_to_float_0, '0', interp_fir_filter_xxx_0, '0']
+- [blocks_char_to_float_0, '0', virtual_sink_0_0, '0']
 - [blocks_multiply_const_vxx_0, '0', epy_block_0, '0']
 - [blocks_multiply_const_vxx_0_0, '0', interp_fir_filter_xxx_0, '0']
 - [blocks_multiply_const_vxx_0_0, '0', virtual_sink_0_0, '0']
