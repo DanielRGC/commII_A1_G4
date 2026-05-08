@@ -10,14 +10,14 @@
 
 from PyQt5 import Qt
 from gnuradio import qtgui
-from gnuradio import analog
 from gnuradio import blocks
 import numpy
 from gnuradio import digital
+from gnuradio import fft
+from gnuradio.fft import window
 from gnuradio import filter
 from gnuradio.filter import firdes
 from gnuradio import gr
-from gnuradio.fft import window
 import sys
 import signal
 from PyQt5 import Qt
@@ -25,6 +25,7 @@ from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 import math
+import numpy as np
 import sip
 
 
@@ -64,7 +65,7 @@ class QPSK(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.Tabla_de_verdad_Constelacion = Tabla_de_verdad_Constelacion = (0.77+0.77j, -0.77+0.77j, 0.77-0.77j, -0.77-0.77j)
+        self.Tabla_de_verdad_Constelacion = Tabla_de_verdad_Constelacion = (1, 0+1j, -1,0-1j)
         self.M = M = len(Tabla_de_verdad_Constelacion)
         self.sps = sps = 8
         self.Rs = Rs = 32000
@@ -77,6 +78,45 @@ class QPSK(gr.top_block, Qt.QWidget):
         # Blocks
         ##################################################
 
+        self.qtgui_vector_sink_f_0 = qtgui.vector_sink_f(
+            1024,
+            (-samp_rate/2),
+            (samp_rate/1024),
+            "x-Axis",
+            "y-Axis",
+            "",
+            1, # Number of inputs
+            None # parent
+        )
+        self.qtgui_vector_sink_f_0.set_update_time(0.10)
+        self.qtgui_vector_sink_f_0.set_y_axis((-140), 15)
+        self.qtgui_vector_sink_f_0.enable_autoscale(False)
+        self.qtgui_vector_sink_f_0.enable_grid(True)
+        self.qtgui_vector_sink_f_0.set_x_axis_units("")
+        self.qtgui_vector_sink_f_0.set_y_axis_units("")
+        self.qtgui_vector_sink_f_0.set_ref_level(0)
+
+
+        labels = ['', '', '', '', '',
+            '', '', '', '', '']
+        widths = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        colors = ["blue", "red", "green", "black", "cyan",
+            "magenta", "yellow", "dark red", "dark green", "dark blue"]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, 1.0, 1.0]
+
+        for i in range(1):
+            if len(labels[i]) == 0:
+                self.qtgui_vector_sink_f_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_vector_sink_f_0.set_line_label(i, labels[i])
+            self.qtgui_vector_sink_f_0.set_line_width(i, widths[i])
+            self.qtgui_vector_sink_f_0.set_line_color(i, colors[i])
+            self.qtgui_vector_sink_f_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_vector_sink_f_0_win = sip.wrapinstance(self.qtgui_vector_sink_f_0.qwidget(), Qt.QWidget)
+        self.top_layout.addWidget(self._qtgui_vector_sink_f_0_win)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_c(
             1024, #size
             samp_rate, #samp_rate
@@ -213,26 +253,37 @@ class QPSK(gr.top_block, Qt.QWidget):
         self.top_layout.addWidget(self._qtgui_const_sink_x_0_win)
         self.interp_fir_filter_xxx_0 = filter.interp_fir_filter_ccc(sps, h)
         self.interp_fir_filter_xxx_0.declare_sample_delay(0)
+        self.fft_vxx_0 = fft.fft_vcc(1024, True, window.blackmanharris(1024), True, 1)
         self.digital_chunks_to_symbols_xx_0 = digital.chunks_to_symbols_bc(Tabla_de_verdad_Constelacion, 1)
+        self.blocks_vector_to_stream_1 = blocks.vector_to_stream(gr.sizeof_gr_complex*1, 1024)
+        self.blocks_stream_to_vector_1 = blocks.stream_to_vector(gr.sizeof_float*1, 1024)
+        self.blocks_stream_to_vector_0 = blocks.stream_to_vector(gr.sizeof_gr_complex*1, 1024)
         self.blocks_packed_to_unpacked_xx_0 = blocks.packed_to_unpacked_bb(Nbps, gr.GR_MSB_FIRST)
         self.blocks_pack_k_bits_bb_0 = blocks.pack_k_bits_bb(8)
-        self.blocks_add_xx_0 = blocks.add_vcc(1)
+        self.blocks_nlog10_ff_0 = blocks.nlog10_ff(1, 1, 0)
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff(10)
+        self.blocks_complex_to_mag_squared_0 = blocks.complex_to_mag_squared(1)
         self.analog_random_source_x_0 = blocks.vector_source_b(list(map(int, numpy.random.randint(0, 2, 1000))), True)
-        self.analog_noise_source_x_0 = analog.noise_source_c(analog.GR_GAUSSIAN, 0.2, 0)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_noise_source_x_0, 0), (self.blocks_add_xx_0, 0))
         self.connect((self.analog_random_source_x_0, 0), (self.blocks_pack_k_bits_bb_0, 0))
-        self.connect((self.blocks_add_xx_0, 0), (self.qtgui_const_sink_x_0, 0))
-        self.connect((self.blocks_add_xx_0, 0), (self.qtgui_time_sink_x_0, 0))
+        self.connect((self.blocks_complex_to_mag_squared_0, 0), (self.blocks_nlog10_ff_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_stream_to_vector_1, 0))
+        self.connect((self.blocks_nlog10_ff_0, 0), (self.blocks_multiply_const_vxx_0, 0))
         self.connect((self.blocks_pack_k_bits_bb_0, 0), (self.blocks_packed_to_unpacked_xx_0, 0))
         self.connect((self.blocks_packed_to_unpacked_xx_0, 0), (self.digital_chunks_to_symbols_xx_0, 0))
+        self.connect((self.blocks_stream_to_vector_0, 0), (self.fft_vxx_0, 0))
+        self.connect((self.blocks_stream_to_vector_1, 0), (self.qtgui_vector_sink_f_0, 0))
+        self.connect((self.blocks_vector_to_stream_1, 0), (self.blocks_complex_to_mag_squared_0, 0))
         self.connect((self.digital_chunks_to_symbols_xx_0, 0), (self.interp_fir_filter_xxx_0, 0))
-        self.connect((self.interp_fir_filter_xxx_0, 0), (self.blocks_add_xx_0, 1))
+        self.connect((self.fft_vxx_0, 0), (self.blocks_vector_to_stream_1, 0))
+        self.connect((self.interp_fir_filter_xxx_0, 0), (self.blocks_stream_to_vector_0, 0))
+        self.connect((self.interp_fir_filter_xxx_0, 0), (self.qtgui_const_sink_x_0, 0))
         self.connect((self.interp_fir_filter_xxx_0, 0), (self.qtgui_freq_sink_x_0, 0))
+        self.connect((self.interp_fir_filter_xxx_0, 0), (self.qtgui_time_sink_x_0, 0))
 
 
     def closeEvent(self, event):
@@ -288,6 +339,7 @@ class QPSK(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
+        self.qtgui_vector_sink_f_0.set_x_axis((-self.samp_rate/2), (self.samp_rate/1024))
 
     def get_h(self):
         return self.h
